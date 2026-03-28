@@ -43,9 +43,9 @@ APP_ENV=development
 
 DB_HOST=host.docker.internal
 DB_USER=root
-DB_PASS=kosonginaja
-DB_NAME=ci3_test
-DB_PORT=3306
+DB_PASS=
+DB_NAME=
+DB_PORT=
 ```
 
 Adjust `DB_USER`, `DB_PASS`, `DB_NAME`, and `DB_PORT` to match the MySQL instance installed on the Mac.
