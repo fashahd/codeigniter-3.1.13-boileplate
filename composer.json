@@ -18,9 +18,12 @@
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
 	"scripts": {
+		"test": "phpunit --configuration phpunit.xml --testsuite All",
+		"test:feature": "phpunit --configuration phpunit.xml --testsuite Feature",
+		"test:unit": "phpunit --configuration phpunit.xml --testsuite Unit",
 		"test:coverage": [
 			"@putenv XDEBUG_MODE=coverage",
-			"phpunit --color=always --coverage-text --configuration tests/travis/sqlite.phpunit.xml"
+			"phpunit --color=always --coverage-text --configuration phpunit.xml --testsuite All"
 		]
 	},
 	"require-dev": {

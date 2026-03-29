@@ -149,6 +149,60 @@ If port `3306` conflicts with a local MySQL instance:
 - this is expected if MySQL is already installed locally
 - keep MySQL on the Mac and leave `DB_HOST=host.docker.internal` with `DB_PORT=3306`
 
+## Testing
+
+Tests are located in `application/tests/` and organized into two suites:
+
+| Suite | Folder | Purpose |
+|---|---|---|
+| Feature | `application/tests/Feature/` | Controller and integration-level tests |
+| Unit | `application/tests/Unit/` | Isolated tests for config, helpers, and pure logic |
+
+### Run all tests
+
+```bash
+composer test
+```
+
+### Run by suite
+
+```bash
+# Feature tests only
+composer test:feature
+
+# Unit tests only
+composer test:unit
+```
+
+### Run with code coverage
+
+Requires Xdebug to be installed and enabled. Then run:
+
+```bash
+composer test:coverage
+```
+
+Coverage is measured across `application/controllers`, `application/models`, `application/libraries`, and `application/helpers`.
+
+### Adding new tests
+
+- Place controller/integration tests in `application/tests/Feature/`
+- Place config/helper/pure-logic tests in `application/tests/Unit/`
+- Test file names must end with `Test.php`
+- Test class names must match the file name
+
+### Code style and static analysis
+
+The pre-commit hook automatically runs PHP CS Fixer and PHPStan on every staged PHP file:
+
+```bash
+# Fix code style manually
+vendor/bin/php-cs-fixer fix
+
+# Run static analysis manually
+vendor/bin/phpstan analyse
+```
+
 ## Notes
 
 - PHP runs from the `php:8.1-fpm` image

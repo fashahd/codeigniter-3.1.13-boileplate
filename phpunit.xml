@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    cacheResult="false"
+>
+    <testsuites>
+        <testsuite name="All">
+            <directory suffix="Test.php">application/tests</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">application/tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">application/tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">application/controllers</directory>
+            <directory suffix=".php">application/models</directory>
+            <directory suffix=".php">application/libraries</directory>
+            <directory suffix=".php">application/helpers</directory>
+        </include>
+        <exclude>
+            <directory>application/tests</directory>
+            <directory>vendor</directory>
+            <directory>system</directory>
+        </exclude>
+    </coverage>
+</phpunit>
