@@ -1,0 +1,19 @@
+parameters:
+    level: 3
+    paths:
+        - application
+
+    bootstrapFiles:
+        - application/tests/_ci_phpunit_test/phpstan/ci3-stubs.php
+
+    excludePaths:
+        - system/*
+        - vendor/*
+
+    ignoreErrors:
+        - '#Call to an undefined method CI_#'
+        -
+            message: '#Variable \$[A-Za-z_][A-Za-z0-9_]* might not be defined\.#'
+            paths:
+                - application/views/*
+                - application/views/**/*

@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Health extends CI_Controller
@@ -6,7 +7,7 @@ class Health extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->db = $this->load->database('', TRUE);
+        $this->db = $this->load->database('', true);
     }
 
     public function check()
@@ -17,9 +18,9 @@ class Health extends CI_Controller
             'checks' => []
         ];
         $has_error = false;
-        
+
         try {
-            $this->db->db_debug = FALSE;
+            $this->db->db_debug = false;
 
             if ($this->db->initialize()) {
                 $status['checks']['database'] = 'OK';
@@ -31,7 +32,7 @@ class Health extends CI_Controller
             $has_error = true;
         }
 
-        if ($this->load->driver('cache', array('adapter' => 'redis'))) {
+        if ($this->load->driver('cache', ['adapter' => 'redis'])) {
             $status['checks']['cache'] = $this->cache->redis->is_supported() ? 'OK' : 'DOWN';
         }
 

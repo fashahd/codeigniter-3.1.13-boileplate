@@ -1,0 +1,30 @@
+#!/bin/sh
+# Get list of staged files on git
+files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.php');
+
+if [ -z "$files" ]; then
+  echo "No PHP files staged for commit.";
+  exit 0;
+fi
+
+# Check code style for staged PHP files using PHP-CS-Fixer
+echo "Checking code style for staged PHP files...";
+vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --path-mode=intersection --dry-run --diff --allow-unsupported-php-version=yes -- $files;
+
+if [ $? -ne 0 ]; then
+  echo "Code style issues found. Please fix them before committing.";
+  echo "You can run 'vendor/bin/php-cs-fixer fix' to automatically fix the issues.";
+  exit 1;
+fi
+
+# PHPStan analysis for staged PHP files
+echo "Running PHPStan analysis for staged PHP files...";
+vendor/bin/phpstan analyse $files;
+
+if [ $? -ne 0 ]; then
+  echo "PHPStan analysis failed. Please fix the issues before committing.";
+  exit 1;
+fi
+
+echo "All checks passed. Proceeding with commit.";
+exit 0;

@@ -12,19 +12,35 @@ This project runs CodeIgniter 3.1.13 with Docker, PHP 8.1 FPM, and Nginx, while 
 ## Prerequisites
 
 - Docker Desktop or Docker Engine with the Docker Compose plugin
+- [Composer](https://getcomposer.org/) installed locally
 - Port `8080` for the application
 - A local MySQL server listening on port `3306`
 
 ## Container Structure
 
 - `app`: PHP 8.1 FPM container that runs CodeIgniter
-- `nginx`: web server that exposes the application at `http://localhost:8080`
+- `nginx`: web server that exposes the application at `http://codeigniter-app.local:8080`
 
 ## Database Setup
 
 MySQL is expected to run on the local macOS machine, not inside Docker.
 
 On macOS, the PHP container can reach the host machine through `host.docker.internal`. The current `.env` already uses that host name.
+
+## Project Setup
+
+After cloning the repository, run the setup script:
+
+```bash
+scripts/setup.sh
+```
+
+This script will:
+
+- Configure git hooks (from `.githooks/`)
+- Set the correct file permissions
+- Install PHP dependencies via Composer (if `vendor/` does not exist)
+- Create .env from .env.example (if `.env` does not exist)
 
 ## Environment Configuration
 
@@ -60,10 +76,28 @@ docker compose up -d --build
 
 Once the containers are running, the application is available at:
 
-- `http://localhost:8080`
-- `http://localhost:8080/health`
+- `http://codeigniter-app.local:8080`
+- `http://codeigniter-app.local:8080/health`
 
 The `/health` endpoint returns the application and database connection status.
+
+## Virtual Host Setup
+
+The Nginx container uses `codeigniter-app.local` as the server name. The host port `8080` maps to the container's port `80`.
+
+Add the following entry to `/etc/hosts` on the Mac:
+
+```bash
+sudo sh -c 'echo "127.0.0.1 codeigniter-app.local" >> /etc/hosts'
+```
+
+Or edit `/etc/hosts` manually:
+
+```
+127.0.0.1 codeigniter-app.local
+```
+
+After that, `http://codeigniter-app.local:8080` will resolve to the Nginx container.
 
 ## Useful Commands
 
@@ -103,7 +137,7 @@ If there is no database schema yet, the application can still load, but any feat
 
 ## Troubleshooting
 
-If `http://localhost:8080/health` returns database status `DOWN`:
+If `http://codeigniter-app.local:8080/health` returns database status `DOWN`:
 
 - make sure `.env` uses `DB_HOST=host.docker.internal`
 - make sure the `.env` credentials match the local MySQL credentials
